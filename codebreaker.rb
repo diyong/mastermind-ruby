@@ -7,12 +7,18 @@ class CodeBreaker
 		@player = player
 		@@comp_pattern = Hash.new	
 		@@comp_pattern_arry = []
-		@@comp_feedback	= Array.new(4, default = "*")	
+		@@comp_feedback	= []
+
+		#Previous player choices and computer feedback is saved during
+		#comp_feedback
+		@@saved_choices_player = []
+		@@saved_feedback = []
 		game_play
 	end
 
 	def game_play
 		puts "\nThe computer will choose between 6 separate colors (blue, red, green, brown, yellow, and purple) and fill 4 spaces in a specific order. Guess the correct combination of colors in the correct order within 12 tries and win."
+		puts "If you need to look at your previous guesses and their corresponding feedback, type \"help\"."
 		puts "Your guesses will be displayed on the board below. Good luck!\n\n"
 
 		computer_pattern
@@ -83,50 +89,79 @@ class CodeBreaker
 					when "blue"
 						@player.guesses[counter_outer][counter_inner] = "blue"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
 					when "red"
 						@player.guesses[counter_outer][counter_inner] = "red"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
 					when "green"
 						@player.guesses[counter_outer][counter_inner] = "green"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
 					when "brown"
 						@player.guesses[counter_outer][counter_inner] = "brown"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
 					when "yellow"
 						@player.guesses[counter_outer][counter_inner] = "yellow"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
 					when "purple"
 						@player.guesses[counter_outer][counter_inner] = "purple"
 						counter_inner += 1
+						puts
 						p @player.guesses[counter_outer]
 						break
+					when "help"
+						help_feedback
 					else
 						puts "Incorrect input."
 					end
 				end
-				#comp_feedback
+				
 			end
+			comp_feedback(counter_inner, counter_outer)
 			counter_inner = 0
 			counter_outer += 1
 		end
 	end
-=begin
-	def comp_feedback
-		@@comp_pattern.each do |x|
-			if x == 
+
+	def comp_feedback(counter_inner, counter_outer)
+		@player.guesses[counter_outer].each_with_index do |elem, indx|
+			@@comp_pattern_arry.each_with_index do |elem_y, indx_y|
+				if indx == indx_y && elem == elem_y
+					@@comp_feedback << "X"
+				elsif elem == elem_y
+					@@comp_feedback << "O"
+				end
 			end
 		end
+		@@saved_choices_player << @player.guesses[counter_outer]
+		@@saved_feedback << @@comp_feedback
+		p @@comp_feedback
+		@@comp_feedback = []
 	end
-=end
+
+	def help_feedback
+		for i in 0...@@saved_feedback.length
+			puts "\nTurn #{i+1}:"
+			p @@saved_choices_player[i]
+			p @@saved_feedback[i]
+		end
+		puts "\nPlease enter a color."
+		puts "\nColor choices are blue, red, green, brown, yellow, or purple."
+		print "> "
+	end
+
 end
 
