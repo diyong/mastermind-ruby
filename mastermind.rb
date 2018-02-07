@@ -11,6 +11,7 @@ init_loop = true
 puts "Welcome to Mastermind: \"I hope I don't stumble through this\" Edition!"
 
 puts "\nPlease enter Player's name:"
+print "> "
 player = Player.new(gets.chomp.to_s)
 puts "\nWelcome, #{player.name}!"
 

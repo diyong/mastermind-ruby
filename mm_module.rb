@@ -7,6 +7,7 @@ module Tools
 		puts "1) Player is the CodeMaker"
 		puts "2) Player is the CodeBreaker"
 		puts "3) Instructions"
+		print "> "
 		loop do
 			input = gets.chomp.to_i
 			case input

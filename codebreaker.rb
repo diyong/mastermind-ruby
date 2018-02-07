@@ -12,7 +12,7 @@ class CodeBreaker
 
 		computer_pattern
 		
-		
+		player_actions
 	end
 
 	private
@@ -56,6 +56,61 @@ class CodeBreaker
 						counter += 1
 					end
 				end
+		end
+	end
+
+	def player_actions
+		counter_outer = 0
+		counter_inner = 0
+		player_input = ""
+
+		while counter_outer < 12
+			while counter_inner < 4
+				puts "Counter inner is #{counter_inner}"
+				puts "\nPlease enter a color."
+				puts "\nColor choices are blue, red, green, brown, yellow, or purple."
+				print "> "
+				
+				while player_input = gets.chomp.downcase
+					case player_input
+					when "blue"
+						@player.guesses[counter_outer][counter_inner] = "blue"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					when "red"
+						@player.guesses[counter_outer][counter_inner] = "red"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					when "green"
+						@player.guesses[counter_outer][counter_inner] = "green"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					when "brown"
+						@player.guesses[counter_outer][counter_inner] = "brown"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					when "yellow"
+						@player.guesses[counter_outer][counter_inner] = "yellow"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					when "purple"
+						@player.guesses[counter_outer][counter_inner] = "purple"
+						counter_inner += 1
+						p @player.guesses[counter_outer]
+						break
+					else
+						puts "Incorrect input."
+					end
+				end
+				
+			end
+			counter_inner = 0
+			counter_outer += 1
 		end
 	end
 
