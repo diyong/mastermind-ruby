@@ -1,5 +1,3 @@
-#Need to work on not letting player use 2 of the same color in one turn.
-
 require "./mm_module.rb"
 include Tools
 
@@ -116,7 +114,7 @@ class CodeBreaker
 					end
 				end
 			end
-			comp_feedback(@counter_inner, @counter_outer)
+			comp_feedback(@counter_outer)
 			break if @@victory == true
 			@counter_inner = 0
 			@counter_outer += 1
@@ -124,7 +122,7 @@ class CodeBreaker
 		puts "\nYou lose. Better luck next time!"
 	end
 
-	def comp_feedback(counter_inner, counter_outer)
+	def comp_feedback(counter_outer)
 		@player.guesses[counter_outer].each_with_index do |elem, indx|
 			@@comp_pattern_arry.each_with_index do |elem_y, indx_y|
 				if indx == indx_y && elem == elem_y
