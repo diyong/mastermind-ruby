@@ -1,3 +1,5 @@
+#Need to work on not letting player use 2 of the same color in one turn.
+
 require "./mm_module.rb"
 include Tools
 
@@ -5,7 +7,10 @@ class CodeBreaker
 
 	def initialize(player)
 		@player = player
+		@counter_outer = 0
+		@counter_inner = 0
 		@@victory = false
+		@@loop_break = false
 		@@comp_pattern = Hash.new	
 		@@comp_pattern_arry = []
 		@@comp_feedback	= []
@@ -20,7 +25,7 @@ class CodeBreaker
 	def game_play
 		puts "\nThe computer will choose between 6 separate colors (blue, red, green, brown, yellow, and purple) and fill 4 spaces in a specific order. Guess the correct combination of colors in the correct order within 12 tries and win."
 		puts "If you need to look at your previous guesses and their corresponding feedback, type \"help\"."
-		puts "Your guesses will be displayed on the board below. Good luck!\n\n"
+		puts "Your guesses will be displayed on the board below. Good luck!"
 
 		computer_pattern
 
@@ -74,67 +79,49 @@ class CodeBreaker
 	end
 
 	def player_actions
-		counter_outer = 0
-		counter_inner = 0
 		player_input = ""
 
-		while counter_outer < 12
-			while counter_inner < 4
-				puts "Counter inner is #{counter_inner}"
-				puts "\nPlease enter a color."
+		while @counter_outer < 12
+			while @counter_inner < 4
+				puts "\nTurn #{@counter_outer+1}:"
+				puts "Please enter a color."
 				puts "\nColor choices are blue, red, green, brown, yellow, or purple."
 				print "> "
 				
 				while player_input = gets.chomp.downcase
 					case player_input
 					when "blue"
-						@player.guesses[counter_outer][counter_inner] = "blue"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("blue")
+						break if @@loop_break == true
 					when "red"
-						@player.guesses[counter_outer][counter_inner] = "red"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("red")
+						break if @@loop_break == true
 					when "green"
-						@player.guesses[counter_outer][counter_inner] = "green"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("green")
+						break if @@loop_break == true
 					when "brown"
-						@player.guesses[counter_outer][counter_inner] = "brown"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("brown")
+						break if @@loop_break == true
 					when "yellow"
-						@player.guesses[counter_outer][counter_inner] = "yellow"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("yellow")
+						break if @@loop_break == true
 					when "purple"
-						@player.guesses[counter_outer][counter_inner] = "purple"
-						counter_inner += 1
-						puts
-						p @player.guesses[counter_outer]
-						break
+						unique_color_check("purple")
+						break if @@loop_break == true
 					when "help"
 						help_feedback
 					else
 						puts "Incorrect input."
+						print "> "
 					end
 				end
 			end
-			comp_feedback(counter_inner, counter_outer)
+			comp_feedback(@counter_inner, @counter_outer)
 			break if @@victory == true
-			counter_inner = 0
-			counter_outer += 1
+			@counter_inner = 0
+			@counter_outer += 1
 		end
+		puts "\nYou lose. Better luck next time!"
 	end
 
 	def comp_feedback(counter_inner, counter_outer)
@@ -165,10 +152,26 @@ class CodeBreaker
 		print "> "
 	end
 
+	#victory_check has been placed inside comp_feedback to catch the
+	#@@comp_feedback variable before it's been cleared for the next round.
 	def victory_check
 		if @@comp_feedback.all? { |x| x == "X" } && @@comp_feedback.length == 4
 			puts "\nYou guessed all four colors and their placements correctly. Congratulations!"
 			@@victory = true
+		end
+	end
+
+	def unique_color_check(color)
+		@@loop_break = false
+		if !@player.guesses[@counter_outer].any?("#{color}")
+			@player.guesses[@counter_outer][@counter_inner] = "#{color}"
+			@counter_inner += 1
+			puts
+			p @player.guesses[@counter_outer]
+			@@loop_break = true
+		else
+			puts "\nCannot have more than one color per set. Please select a different color."
+			print "> "
 		end
 	end
 
