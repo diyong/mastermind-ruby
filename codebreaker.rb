@@ -5,6 +5,7 @@ class CodeBreaker
 
 	def initialize(player)
 		@player = player
+		@@victory = false
 		@@comp_pattern = Hash.new	
 		@@comp_pattern_arry = []
 		@@comp_feedback	= []
@@ -128,9 +129,9 @@ class CodeBreaker
 						puts "Incorrect input."
 					end
 				end
-				
 			end
 			comp_feedback(counter_inner, counter_outer)
+			break if @@victory == true
 			counter_inner = 0
 			counter_outer += 1
 		end
@@ -149,6 +150,7 @@ class CodeBreaker
 		@@saved_choices_player << @player.guesses[counter_outer]
 		@@saved_feedback << @@comp_feedback
 		p @@comp_feedback
+		victory_check
 		@@comp_feedback = []
 	end
 
@@ -161,6 +163,13 @@ class CodeBreaker
 		puts "\nPlease enter a color."
 		puts "\nColor choices are blue, red, green, brown, yellow, or purple."
 		print "> "
+	end
+
+	def victory_check
+		if @@comp_feedback.all? { |x| x == "X" } && @@comp_feedback.length == 4
+			puts "\nYou guessed all four colors and their placements correctly. Congratulations!"
+			@@victory = true
+		end
 	end
 
 end
