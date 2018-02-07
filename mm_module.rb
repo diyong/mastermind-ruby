@@ -36,4 +36,10 @@ module Tools
 		puts "\nGuess the correct colors in the correct order in 12 tries and the CodeBreaker wins!"
 	end
 
+	def hash_to_arry(hsh, arry)
+		hsh.each do |key, value|
+			arry << value
+		end
+	end
+
 end

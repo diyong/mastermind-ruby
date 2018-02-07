@@ -1,8 +1,13 @@
+require "./mm_module.rb"
+include Tools
+
 class CodeBreaker
 
 	def initialize(player)
 		@player = player
 		@@comp_pattern = Hash.new	
+		@@comp_pattern_arry = []
+		@@comp_feedback	= Array.new(4, default = "*")	
 		game_play
 	end
 
@@ -11,6 +16,8 @@ class CodeBreaker
 		puts "Your guesses will be displayed on the board below. Good luck!\n\n"
 
 		computer_pattern
+
+		hash_to_arry(@@comp_pattern, @@comp_pattern_arry)
 		
 		player_actions
 	end
@@ -107,12 +114,19 @@ class CodeBreaker
 						puts "Incorrect input."
 					end
 				end
-				
+				#comp_feedback
 			end
 			counter_inner = 0
 			counter_outer += 1
 		end
 	end
-
+=begin
+	def comp_feedback
+		@@comp_pattern.each do |x|
+			if x == 
+			end
+		end
+	end
+=end
 end
 
