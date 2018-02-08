@@ -5,6 +5,7 @@ class CodeMaker
 		@@counter_outer = 0
 		@@loop_break = false
 		@@victory = false
+		@@comp_save = Array.new(12) { Array.new(4, default = "*") }
 		@@comp_guesses = Array.new(12) { Array.new }
 		@@feedback = []
 		gameplay
@@ -77,12 +78,28 @@ class CodeMaker
 	end
 
 	def comp_algorithm
+		#comp_guess_gen does not take account of feedback. Only used to create 
+		#initial guess.
+		comp_guess_gen
+
 		while @@counter_outer < 12
 
-			comp_guess_gen
-			feedback
+			#comp_guess_feedback	
+			puts "\nTurn #{@@counter_outer+1}:"
+			puts "Your code:"
+			puts "#{@player.code}"
+			puts "\nThe computer guessed:"
+			puts "#{@@comp_guesses[@@counter_outer]}"
 
-			
+			feedback
+			break if @@victory == true
+
+			p @@comp_save[@@counter_outer+1]
+
+			puts "\nPress Enter to start the next turn:"
+			print "> "
+
+			x = gets.chomp.to_s
 
 			@@counter_outer += 1
 		
@@ -133,22 +150,38 @@ class CodeMaker
 	def feedback
 		@@comp_guesses[@@counter_outer].each_with_index do |elem, indx|
 			@player.code.each_with_index do |elem_y, indx_y|
-				if indx == indx_y && elem == elem_y
-					@@feedback << "X"
-				elsif elem == elem_y
-					@@feedback << "O"
+				if @player.code.any?(elem)
+					if indx == indx_y && elem == elem_y
+						@@feedback << "X"
+						break
+					elsif elem == elem_y
+						@@feedback << "O"
+						break
+					end
 				else
 					@@feedback << "*"
+					break
 				end
 			end
 		end
+		comp_save
 		p @@feedback
 		victory_check
 		@@feedback = []
 	end
 
+	def comp_save
+		@@feedback.each_with_index do |elem, indx|
+			if elem == "X"
+				@@comp_save[@@counter_outer+1][indx] = @@comp_guesses[@@counter_outer][indx] + "+x"
+			elsif elem == "O"
+				@@comp_save[@@counter_outer+1][indx] = @@comp_guesses[@@counter_outer][indx] + "+o"
+			end
+		end
+	end
+
 	def victory_check
-		if @@feedback.all? { |x| x = "X" } && @@feedback.length == 4
+		if !@@feedback.all? { |x| x = "X" } && @@feedback.length == 4
 			puts "\nComputer wins! The computer won in #{@@counter_outer+1} turns."
 			@@victory = true
 		end
