@@ -23,7 +23,6 @@ class CodeMaker
 		puts "\nThe computer will now try to guess your colors and pattern."
 
 		comp_algorithm
-
 	end
 
 	private
