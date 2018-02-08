@@ -2,26 +2,23 @@ class CodeMaker
 
 	def initialize(player)
 		@player = player
-		@@loop_break = false
 		@@counter_outer = 0
-		@@counter_inner = 0
-		@@comp_guesses = Array.new(12) { Array.new() }
+		@@loop_break = false
+		@@victory = false
+		@@comp_guesses = Array.new(12) { Array.new }
+		@@feedback = []
 		gameplay
 	end
 
 	def gameplay
 		puts "\nYou are the CodeMaker. You have a selection of 6 different colors which you will use to create a horizontal pattern of 4 unique colors. After creating your pattern, the computer will then have 12 turns to try and guess the colors and the pattern the colors have been placed in."
 		puts "\nColors are restricted to being used once per pattern."
-		
-		comp_pattern_gen
 
-		p @@comp_guesses[@@counter_outer]
+		player_pattern
 
-		#player_pattern
+		puts "\nThe computer will now try to guess your colors and pattern."
 
-		#puts "\nThe computer will now try to guess your colors and pattern."
-
-		#comp_algorithm
+		comp_algorithm
 
 	end
 
@@ -80,8 +77,16 @@ class CodeMaker
 	end
 
 	def comp_algorithm
-		#code
+		while @@counter_outer < 12
 
+			comp_guess_gen
+			feedback
+
+			
+
+			@@counter_outer += 1
+		
+		end
 	end
 
 	def comp_guess_gen
@@ -126,7 +131,28 @@ class CodeMaker
 	end
 
 	def feedback
-		#code
+		@@comp_guesses[@@counter_outer].each_with_index do |elem, indx|
+			@player.code.each_with_index do |elem_y, indx_y|
+				if indx == indx_y && elem == elem_y
+					@@feedback << "X"
+				elsif elem == elem_y
+					@@feedback << "O"
+				else
+					@@feedback << "*"
+				end
+			end
+		end
+		p @@feedback
+		victory_check
+		@@feedback = []
 	end
+
+	def victory_check
+		if @@feedback.all? { |x| x = "X" } && @@feedback.length == 4
+			puts "\nComputer wins! The computer won in #{@@counter_outer+1} turns."
+			@@victory = true
+		end
+	end
+
 
 end
