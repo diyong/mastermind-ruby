@@ -42,4 +42,12 @@ module Tools
 		end
 	end
 
+	def random_color
+		rand_color = ""
+		color_combo = { 0 => "blue", 1 => "red", 2 => "green", 3 => "brown", 4 => "yellow", 5 => "purple" }
+
+		rand_color = rand(0..5)
+		return color_combo[rand_color]
+	end
+
 end

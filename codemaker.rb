@@ -1,3 +1,6 @@
+require "./mm_module.rb"
+include Tools
+
 class CodeMaker
 
 	def initialize(player)
@@ -5,7 +8,7 @@ class CodeMaker
 		@@counter_outer = 0
 		@@loop_break = false
 		@@victory = false
-		@@comp_save = Array.new(12) { Array.new(4, default = "*") }
+		@@comp_save = Array.new(4, default = "*")
 		@@comp_guesses = Array.new(12) { Array.new }
 		@@feedback = []
 		gameplay
@@ -80,11 +83,11 @@ class CodeMaker
 	def comp_algorithm
 		#comp_guess_gen does not take account of feedback. Only used to create 
 		#initial guess.
-		comp_guess_gen
+		comp_guess_initial
 
 		while @@counter_outer < 12
 
-			#comp_guess_feedback	
+			comp_guess_feedback	
 			puts "\nTurn #{@@counter_outer+1}:"
 			puts "Your code:"
 			puts "#{@player.code}"
@@ -94,8 +97,6 @@ class CodeMaker
 			feedback
 			break if @@victory == true
 
-			p @@comp_save[@@counter_outer+1]
-
 			puts "\nPress Enter to start the next turn:"
 			print "> "
 
@@ -104,9 +105,10 @@ class CodeMaker
 			@@counter_outer += 1
 		
 		end
+		puts "\nYou win! The computer failed to guess your code. Congratulations, CodeMaker."
 	end
 
-	def comp_guess_gen
+	def comp_guess_initial
 		counter = 0
 		color_combo = { 0 => "blue", 1 => "red", 2 => "green", 3 => "brown", 4 => "yellow", 5 => "purple" }
 
@@ -171,17 +173,64 @@ class CodeMaker
 	end
 
 	def comp_save
+		@@comp_save = Array.new(4, default = "*")
+
 		@@feedback.each_with_index do |elem, indx|
 			if elem == "X"
-				@@comp_save[@@counter_outer+1][indx] = @@comp_guesses[@@counter_outer][indx] + "+x"
+				@@comp_save[indx] = @@comp_guesses[@@counter_outer][indx] + "+x"
 			elsif elem == "O"
-				@@comp_save[@@counter_outer+1][indx] = @@comp_guesses[@@counter_outer][indx] + "+o"
+				@@comp_save[indx] = @@comp_guesses[@@counter_outer][indx] + "+o"
 			end
 		end
 	end
 
+	def comp_guess_feedback
+		rand_int = ""
+		rdm_clr = ""
+
+		@@comp_save.each_with_index do |elem, indx|
+			if elem.match?(/x$/)
+				@@comp_guesses[@@counter_outer][indx] = elem.slice(0...-2)
+			end
+		end
+
+		@@comp_save.each_with_index do |elem, indx|
+			if elem.match?(/o$/)
+				loop do 
+					rand_int = rand(0...4)
+					if !@@comp_guesses[@@counter_outer][rand_int].is_a?(String)
+						@@comp_guesses[@@counter_outer][rand_int] = elem.slice(0...-2)
+						break
+					end
+				end
+			end
+		end
+
+		@@comp_guesses[@@counter_outer].each_with_index do |elem, indx|
+			if elem == nil
+				loop do
+					rdm_clr = random_color
+
+					unless @@comp_guesses[@@counter_outer].any?(rdm_clr)
+						@@comp_guesses[@@counter_outer][indx] = rdm_clr
+						break
+					end
+				end
+			end
+		end
+
+		if @@comp_guesses[@@counter_outer].length < 4
+			rdm_clr = random_color
+
+			unless @@comp_guesses[@@counter_outer].any?(rdm_clr)
+				@@comp_guesses[@@counter_outer] << rdm_clr
+			end
+		end
+
+	end
+
 	def victory_check
-		if !@@feedback.all? { |x| x = "X" } && @@feedback.length == 4
+		if @@feedback.all?("X") && @@feedback.length == 4
 			puts "\nComputer wins! The computer won in #{@@counter_outer+1} turns."
 			@@victory = true
 		end
