@@ -3,16 +3,29 @@ class CodeMaker
 	def initialize(player)
 		@player = player
 		@@loop_break = false
+		@@counter_outer = 0
+		@@counter_inner = 0
+		@@comp_guesses = Array.new(12) { Array.new() }
 		gameplay
 	end
 
 	def gameplay
-		puts "\nYou are the CodeMaster. You have a selection of 6 different colors which you will use to create a horizontal pattern of 4 unique colors. After creating your pattern, the computer will then have 12 turns to try and guess the colors and the pattern the colors have been placed in."
+		puts "\nYou are the CodeMaker. You have a selection of 6 different colors which you will use to create a horizontal pattern of 4 unique colors. After creating your pattern, the computer will then have 12 turns to try and guess the colors and the pattern the colors have been placed in."
 		puts "\nColors are restricted to being used once per pattern."
 		
-		player_pattern
+		comp_pattern_gen
+
+		p @@comp_guesses[@@counter_outer]
+
+		#player_pattern
+
+		#puts "\nThe computer will now try to guess your colors and pattern."
+
+		#comp_algorithm
 
 	end
+
+	private
 
 	def player_pattern
 		counter = 0
@@ -65,4 +78,55 @@ class CodeMaker
 			print "> "
 		end
 	end
+
+	def comp_algorithm
+		#code
+
+	end
+
+	def comp_guess_gen
+		counter = 0
+		color_combo = { 0 => "blue", 1 => "red", 2 => "green", 3 => "brown", 4 => "yellow", 5 => "purple" }
+
+		while counter < 4
+			y = rand(0...6)
+			case y
+			when 0
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "blue"
+					counter += 1
+				end
+			when 1
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "red"
+					counter += 1
+				end
+			when 2
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "green"
+					counter += 1
+				end
+			when 3
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "brown"
+					counter += 1
+				end
+			when 4
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "yellow"
+					counter += 1
+				end
+			when 5
+				if !@@comp_guesses[@@counter_outer].any?(color_combo[y])
+					@@comp_guesses[@@counter_outer] << "purple"
+					counter += 1
+				end
+			end
+		end
+	end
+
+	def feedback
+		#code
+	end
+
 end

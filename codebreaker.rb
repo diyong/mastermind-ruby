@@ -40,7 +40,6 @@ class CodeBreaker
 
 		while counter < 4
 				y = rand(0...6)
-
 				case y
 				when 0
 					if !@@comp_pattern.has_key?(y)
