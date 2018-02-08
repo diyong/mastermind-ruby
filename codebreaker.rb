@@ -17,10 +17,10 @@ class CodeBreaker
 		#comp_feedback
 		@@saved_choices_player = []
 		@@saved_feedback = []
-		game_play
+		gameplay
 	end
 
-	def game_play
+	def gameplay
 		puts "\nThe computer will choose between 6 separate colors (blue, red, green, brown, yellow, and purple) and fill 4 spaces in a specific order. Guess the correct combination of colors in the correct order within 12 tries and win."
 		puts "If you need to look at your previous guesses and their corresponding feedback, type \"help\"."
 		puts "Your guesses will be displayed on the board below. Good luck!"
@@ -86,25 +86,25 @@ class CodeBreaker
 				puts "\nColor choices are blue, red, green, brown, yellow, or purple."
 				print "> "
 				
-				while player_input = gets.chomp.downcase
+				while player_input = gets.chomp.to_s.downcase
 					case player_input
 					when "blue"
-						unique_color_check("blue")
+						unique_color_check_cb("blue")
 						break if @@loop_break == true
 					when "red"
-						unique_color_check("red")
+						unique_color_check_cb("red")
 						break if @@loop_break == true
 					when "green"
-						unique_color_check("green")
+						unique_color_check_cb("green")
 						break if @@loop_break == true
 					when "brown"
-						unique_color_check("brown")
+						unique_color_check_cb("brown")
 						break if @@loop_break == true
 					when "yellow"
-						unique_color_check("yellow")
+						unique_color_check_cb("yellow")
 						break if @@loop_break == true
 					when "purple"
-						unique_color_check("purple")
+						unique_color_check_cb("purple")
 						break if @@loop_break == true
 					when "help"
 						help_feedback
@@ -159,7 +159,7 @@ class CodeBreaker
 		end
 	end
 
-	def unique_color_check(color)
+	def unique_color_check_cb(color)
 		@@loop_break = false
 		if !@player.guesses[@counter_outer].any?("#{color}")
 			@player.guesses[@counter_outer][@counter_inner] = "#{color}"

@@ -1,5 +1,6 @@
 require "./player.rb"
 require "./codebreaker.rb"
+require "./codemaker.rb"
 require "./codebreakerboard.rb"
 require "./mm_module.rb"
 include Tools
@@ -21,8 +22,8 @@ loop do
 
 	case init_menu_sel
 	when 1
-		puts "Still in development. Please select another option."
-		init_loop = true
+		CodeMaker.new(player)
+		init_loop = false
 		break if init_loop == false
 	when 2
 		CodeBreaker.new(player)
