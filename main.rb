@@ -1,7 +1,6 @@
 require "./player.rb"
 require "./codebreaker.rb"
 require "./codemaker.rb"
-require "./codebreakerboard.rb"
 require "./mm_module.rb"
 include Tools
 
