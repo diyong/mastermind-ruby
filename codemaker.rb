@@ -105,7 +105,7 @@ class CodeMaker
 			@@counter_outer += 1
 		
 		end
-		puts "\nYou win! The computer failed to guess your code. Congratulations, CodeMaker."
+		
 	end
 
 	def comp_guess_initial
@@ -233,6 +233,8 @@ class CodeMaker
 		if @@feedback.all?("X") && @@feedback.length == 4
 			puts "\nComputer wins! The computer won in #{@@counter_outer+1} turns."
 			@@victory = true
+		elsif @@counter_outer == 11
+			puts "\nYou win! The computer failed to guess your code. Congratulations, CodeMaker."
 		end
 	end
 
