@@ -171,6 +171,4 @@ class CodeBreaker
 			print "> "
 		end
 	end
-
 end
-

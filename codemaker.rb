@@ -86,7 +86,6 @@ class CodeMaker
 		comp_guess_initial
 
 		while @@counter_outer < 12
-
 			comp_guess_feedback	
 			puts "\nTurn #{@@counter_outer+1}:"
 			puts "Your code:"
@@ -105,7 +104,6 @@ class CodeMaker
 			@@counter_outer += 1
 		
 		end
-		
 	end
 
 	def comp_guess_initial
@@ -198,6 +196,7 @@ class CodeMaker
 			if elem.match?(/o$/)
 				loop do 
 					rand_int = rand(0...4)
+
 					if !@@comp_guesses[@@counter_outer][rand_int].is_a?(String)
 						@@comp_guesses[@@counter_outer][rand_int] = elem.slice(0...-2)
 						break
@@ -226,7 +225,6 @@ class CodeMaker
 				@@comp_guesses[@@counter_outer] << rdm_clr
 			end
 		end
-
 	end
 
 	def victory_check
@@ -237,6 +235,4 @@ class CodeMaker
 			puts "\nYou win! The computer failed to guess your code. Congratulations, CodeMaker."
 		end
 	end
-
-
 end

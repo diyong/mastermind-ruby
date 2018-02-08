@@ -49,5 +49,4 @@ module Tools
 		rand_color = rand(0..5)
 		return color_combo[rand_color]
 	end
-
 end
